@@ -6,7 +6,7 @@
 import { GoogleGenAI, Modality } from '@google/genai';
 import { marked } from 'marked';
 import { useEffect, useState } from 'react';
-import '../../pawsplainer.css'
+import '../pawsplainer.css'
 const Catsplainer = () => {
     const [apiKeyMissing, setApiKeyMissing] = useState(false);
 
