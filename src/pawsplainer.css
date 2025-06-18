@@ -93,3 +93,24 @@
   margin-bottom: 8px;
   font-size: 1rem;
 }
+
+.catsplainer-submit {
+  display: block;
+  margin: 0 auto 1em auto;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #1a7fd7;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.catsplainer-submit:disabled {
+  background: #a0c7ef;
+  cursor: not-allowed;
+}
+.catsplainer-submit:hover:not(:disabled) {
+  background: #0c56ac;
+}
