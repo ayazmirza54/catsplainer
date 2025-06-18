@@ -170,12 +170,12 @@ Keep going until you're done.`;
                     </p>
                 </div>
             ) : (
-                <>
-                    <h1>Catsplainer</h1>
-                    <p>Ask me anything and I'll explain it using tiny cats!</p>
+                <div style={{ backgroundColor: '#ffffffa0', padding: '20px', borderRadius: '10px' }}>
+                    <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>🐈🐈 Catsplainer</h1>
+                    <p style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Ask me anything and I'll explain it using tiny cats!</p>
 
                     <div id="examples">
-                        <h3>Try these examples:</h3>
+                        <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Try these examples:</h3>
                         <ul>
                             <li>How does photosynthesis work?</li>
                             <li>What is machine learning?</li>
@@ -189,7 +189,7 @@ Keep going until you're done.`;
 
                     <div id="output"></div>
                     <div id="slideshow" hidden></div>
-                </>
+                </div>
             )}
         </div>
     );
