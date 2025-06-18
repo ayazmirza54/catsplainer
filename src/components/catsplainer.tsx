@@ -223,7 +223,7 @@ Keep going until you're done.`;
                             <div className="paw-print paw-2"></div>
                             <div className="paw-print paw-3"></div>
                         </div>
-                        <p className="loader-text">Creating puppy explanations...</p>
+                        <p className="loader-text">Create fun explanations with cute dog images...</p>
                     </div>
 
                     <div id="error" hidden></div>
