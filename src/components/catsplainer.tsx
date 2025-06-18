@@ -137,7 +137,7 @@ Keep going until you're done.`;
 
         const examples = document.querySelectorAll('#examples li');
         examples.forEach((li) =>
-            li.addEventListener('click', async (e) => {
+            li.addEventListener('click', async () => {
                 await generate(li.textContent as string);
             }),
         );
