@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import '../pawsplainer.css'
 const Catsplainer = () => {
     const [apiKeyMissing, setApiKeyMissing] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
@@ -25,6 +26,8 @@ const Catsplainer = () => {
         const modelOutput = document.querySelector('#output') as HTMLDivElement;
         const slideshow = document.querySelector('#slideshow') as HTMLDivElement;
         const error = document.querySelector('#error') as HTMLDivElement;
+        const submitButton = document.querySelector('#submit-button') as HTMLButtonElement;
+        const loader = document.querySelector('#loader') as HTMLDivElement;
 
         const additionalInstructions = `
 Use a fun story about lots of tiny dogs and puppies as a metaphor.
@@ -56,7 +59,12 @@ Keep going until you're done.`;
         }
 
         async function generate(message: string) {
+            if (!message.trim()) return;
+
+            setIsLoading(true);
             userInput.disabled = true;
+            submitButton.disabled = true;
+            loader.removeAttribute('hidden');
 
             // Create a new chat instance to clear history
             const chat = ai.chats.create({
@@ -122,17 +130,28 @@ Keep going until you're done.`;
                 const msg = parseError(e as string);
                 error.innerHTML = `Something went wrong: ${msg}`;
                 error.removeAttribute('hidden');
+            } finally {
+                setIsLoading(false);
+                userInput.disabled = false;
+                submitButton.disabled = false;
+                loader.setAttribute('hidden', '');
+                userInput.focus();
             }
-            userInput.disabled = false;
-            userInput.focus();
         }
 
+        // Handle Enter key press
         userInput.addEventListener('keydown', async (e: KeyboardEvent) => {
-            if (e.code === 'Enter') {
+            if (e.code === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 const message = userInput.value;
                 await generate(message);
             }
+        });
+
+        // Handle submit button click
+        submitButton.addEventListener('click', async () => {
+            const message = userInput.value;
+            await generate(message);
         });
 
         const examples = document.querySelectorAll('#examples li');
@@ -144,10 +163,10 @@ Keep going until you're done.`;
     }, []);
 
     return (
-        <div>
+        <div className="catsplainer-container">
             {apiKeyMissing ? (
                 <div style={{ padding: '20px', textAlign: 'center' }}>
-                    <h1>Catsplainer</h1>
+                    <h1 className="catsplainer-title">🐶 Pawsplainer</h1>
                     <p style={{ color: 'red', marginBottom: '20px' }}>
                         ⚠️ API Key Missing
                     </p>
@@ -170,12 +189,12 @@ Keep going until you're done.`;
                     </p>
                 </div>
             ) : (
-                <div style={{ backgroundColor: '#ffffffa0', padding: '20px', borderRadius: '10px' }}>
-                    <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>🐶 Pawsplainer</h1>
-                    <p style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Ask me anything and I'll explain it using tiny puppies!</p>
+                <div>
+                    <h1 className="catsplainer-title">🐶 Pawsplainer</h1>
+                    <p className="catsplainer-description">Ask me anything and I'll explain it using tiny puppies!</p>
 
                     <div id="examples">
-                        <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Try these examples:</h3>
+                        <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '0.5em' }}>Try these examples:</h3>
                         <ul>
                             <li>How does photosynthesis work?</li>
                             <li>What is machine learning?</li>
@@ -183,7 +202,29 @@ Keep going until you're done.`;
                         </ul>
                     </div>
 
-                    <textarea id="input" placeholder="Ask me anything..."></textarea>
+                    <textarea
+                        id="input"
+                        placeholder="Ask me anything..."
+                        rows={3}
+                    ></textarea>
+
+                    <button
+                        id="submit-button"
+                        className="catsplainer-submit"
+                        type="button"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? '🐾 Thinking...' : '🐾 Explain with Puppies!'}
+                    </button>
+
+                    <div id="loader" className="loader-container" hidden>
+                        <div className="loader">
+                            <div className="paw-print paw-1"></div>
+                            <div className="paw-print paw-2"></div>
+                            <div className="paw-print paw-3"></div>
+                        </div>
+                        <p className="loader-text">Creating puppy explanations...</p>
+                    </div>
 
                     <div id="error" hidden></div>
 
